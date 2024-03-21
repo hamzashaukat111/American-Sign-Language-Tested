@@ -1,3 +1,5 @@
+// Global array to store detected letters
+var detectedLetters = [];
 $(document).ready(function () {
   var video = document.getElementById("videoElement");
   var canvas = document.getElementById("canvas");
@@ -32,11 +34,9 @@ $(document).ready(function () {
       processImage(formData);
     });
   });
-
   function processImage(formData) {
     $.ajax({
       url: "https://southcentralus.api.cognitive.microsoft.com/customvision/v3.0/Prediction/638afed1-22b2-4713-8e96-47d2a436520e/detect/iterations/Iteration2/image",
-
       type: "POST",
       data: formData,
       processData: false,
@@ -44,9 +44,7 @@ $(document).ready(function () {
       headers: {
         "Prediction-Key": "a494b65885ec47b8ac8f1d15c7e62805",
       },
-
       success: function (response) {
-        console.log(response);
         var predictions = response.predictions;
         var resultContainer = document.getElementById("resultContainer");
         var resultHeading = document.getElementById("resultHeading");
@@ -70,23 +68,11 @@ $(document).ready(function () {
             }
           }
 
-          var result = '<div class="result-container">';
-          result += '<div class="prediction">';
-          result += '<p class="tag-name">' + predictedTag + "</p>";
-          result += '<div class="percentage-bar">';
-          result +=
-            '<div class="percentage" style="width: ' +
-            maxProbability * 100 +
-            '%;"></div>';
-          result += "</div>";
-          result +=
-            '<p class="probability">' +
-            (maxProbability * 100).toFixed(2) +
-            "%</p>";
-          result += "</div>";
-          result += "</div>";
+          // Add detected letter to the array
+          detectedLetters.push(predictedTag);
 
-          resultContainer.innerHTML = result;
+          // Update UI to display detected letters
+          updateDetectedLettersUI();
 
           resultHeading.innerHTML =
             '<h2 class="result-heading">This sign means the alphabet ' +
@@ -107,3 +93,27 @@ $(document).ready(function () {
     });
   }
 });
+// Function to update UI with detected letters
+function updateDetectedLettersUI() {
+  var resultContainer = document.getElementById("resultContainer");
+  var result = '<div class="result-container">';
+  for (var i = 0; i < detectedLetters.length; i++) {
+    result += '<div class="prediction">';
+    result += '<p class="tag-name">' + detectedLetters[i] + "</p>";
+    result += "</div>";
+  }
+  result += "</div>";
+  resultContainer.innerHTML = result;
+
+  // Add event listener to clear button
+  var clearButton = document.getElementById("clearButton");
+  clearButton.addEventListener("click", function () {
+    clearDetectedLetters();
+  });
+}
+
+// Function to clear detected letters
+function clearDetectedLetters() {
+  detectedLetters = [];
+  updateDetectedLettersUI(); // Update UI to show no letters detected
+}

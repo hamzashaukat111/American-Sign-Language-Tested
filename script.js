@@ -44,6 +44,7 @@ $(document).ready(function () {
       headers: {
         "Prediction-Key": "a494b65885ec47b8ac8f1d15c7e62805",
       },
+      //
       success: function (response) {
         var predictions = response.predictions;
         var resultContainer = document.getElementById("resultContainer");
@@ -68,16 +69,36 @@ $(document).ready(function () {
             }
           }
 
-          // Add detected letter to the array
-          detectedLetters.push(predictedTag);
+          var result = '<div class="result-container">';
+          result += '<div class="prediction">';
+          result += '<p class="tag-name">' + predictedTag + "</p>";
+          result += '<div class="percentage-bar">';
+          result +=
+            '<div class="percentage" style="width: ' +
+            maxProbability * 100 +
+            '%;"></div>';
+          result += "</div>";
+          result +=
+            '<p class="probability">' +
+            (maxProbability * 100).toFixed(2) +
+            "%</p>";
+          result += "</div>";
+          result += "</div>";
 
-          // Update UI to display detected letters
-          updateDetectedLettersUI();
+          // Append the prediction result
+          resultContainer.innerHTML = result;
 
+          // Update result heading
           resultHeading.innerHTML =
             '<h2 class="result-heading">This sign means the alphabet ' +
             predictedTag +
             "</h2>";
+
+          // Add the detected letter to the array
+          detectedLetters.push(predictedTag);
+
+          // Update UI to display detected letters
+          updateDetectedLettersUI();
         } else {
           resultContainer.innerHTML = "<p>No predictions found.</p>";
         }
@@ -93,6 +114,30 @@ $(document).ready(function () {
     });
   }
 });
+// // Function to update UI with detected letters
+// function updateDetectedLettersUI() {
+//   var resultContainer = document.getElementById("resultContainer");
+//   var result = '<div class="result-container">';
+//   for (var i = 0; i < detectedLetters.length; i++) {
+//     result += '<div class="prediction">';
+//     result += '<p class="tag-name">' + detectedLetters[i] + "</p>";
+//     result += "</div>";
+//   }
+//   result += "</div>";
+//   resultContainer.innerHTML = result;
+
+//   // Add event listener to clear button
+//   var clearButton = document.getElementById("clearButton");
+//   clearButton.addEventListener("click", function () {
+//     clearDetectedLetters();
+//   });
+// }
+
+// // Function to clear detected letters
+// function clearDetectedLetters() {
+//   detectedLetters = [];
+//   updateDetectedLettersUI(); // Update UI to show no letters detected
+// }
 // Function to update UI with detected letters
 function updateDetectedLettersUI() {
   var resultContainer = document.getElementById("resultContainer");
@@ -102,7 +147,8 @@ function updateDetectedLettersUI() {
     result += '<p class="tag-name">' + detectedLetters[i] + "</p>";
     result += "</div>";
   }
-  result += "</div>";
+  result +=
+    '</div><button id="clearButton" class="btn btn-danger mt-3">Clear Letters</button>';
   resultContainer.innerHTML = result;
 
   // Add event listener to clear button
@@ -115,5 +161,6 @@ function updateDetectedLettersUI() {
 // Function to clear detected letters
 function clearDetectedLetters() {
   detectedLetters = [];
-  updateDetectedLettersUI(); // Update UI to show no letters detected
+  var resultContainer = document.getElementById("resultContainer");
+  resultContainer.innerHTML = "<p>No letters detected.</p>";
 }

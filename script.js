@@ -67,6 +67,23 @@ $(document).ready(function () {
               predictedTag = prediction.tagName;
             }
           }
+          var result = '<div class="result-container">';
+          result += '<div class="prediction">';
+          result += '<p class="tag-name">' + predictedTag + "</p>";
+          result += '<div class="percentage-bar">';
+          result +=
+            '<div class="percentage" style="width: ' +
+            maxProbability * 100 +
+            '%;"></div>';
+          result += "</div>";
+          result +=
+            '<p class="probability">' +
+            (maxProbability * 100).toFixed(2) +
+            "%</p>";
+          result += "</div>";
+          result += "</div>";
+
+          resultContainer.innerHTML = result;
 
           // Add detected letter to the array
           detectedLetters.push(predictedTag);
@@ -95,15 +112,15 @@ $(document).ready(function () {
 });
 // Function to update UI with detected letters
 function updateDetectedLettersUI() {
-  var resultContainer = document.getElementById("resultContainer");
-  var result = '<div class="result-container">';
+  var resultLetter = document.getElementById("resultLetter");
+  var resultL = '<div class="result-Letter">';
   for (var i = 0; i < detectedLetters.length; i++) {
-    result += '<div class="prediction">';
-    result += '<p class="tag-name">' + detectedLetters[i] + "</p>";
-    result += "</div>";
+    resultL += '<div class="prediction">';
+    resultL += '<p class="tag-name">' + detectedLetters[i] + "</p>";
+    resultL += "</div>";
   }
-  result += "</div>";
-  resultContainer.innerHTML = result;
+  resultL += "</div>";
+  resultLetter.innerHTML = resultL;
 
   // Add event listener to clear button
   var clearButton = document.getElementById("clearButton");

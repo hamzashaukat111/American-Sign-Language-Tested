@@ -1,6 +1,10 @@
 .container {
   margin-top: 20px;
 }
+.prediction {
+  display: inline-block;
+  margin-right: 3px; /* Adjust spacing between letters */
+}
 
 .header {
   margin-bottom: 30px;

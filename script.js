@@ -110,24 +110,50 @@ $(document).ready(function () {
     });
   }
 });
-// Function to update UI with detected letters
+
+// Function to update UI with detected letters forming a word
 function updateDetectedLettersUI() {
-  var resultLetter = document.getElementById("resultLetter");
-  var resultL = '<div class="result-Letter">';
+  var wordContainer = document.getElementById("wordContainer");
+  var word = ""; // Initialize word string
+
   for (var i = 0; i < detectedLetters.length; i++) {
-    resultL += '<div class="prediction">';
-    resultL += '<p class="tag-name">' + detectedLetters[i] + "</p>";
-    resultL += "</div>";
+    word += '<span class="stylish-letter">' + detectedLetters[i] + "</span>";
   }
-  resultL += "</div>";
-  resultLetter.innerHTML = resultL;
+
+  wordContainer.innerHTML = word;
+
+  // Show clear button if there are detected letters
+  var clearButton = document.getElementById("clearButton");
+  if (detectedLetters.length > 0) {
+    clearButton.style.display = "block";
+  } else {
+    clearButton.style.display = "none";
+  }
 
   // Add event listener to clear button
-  var clearButton = document.getElementById("clearButton");
   clearButton.addEventListener("click", function () {
     clearDetectedLetters();
   });
 }
+
+// // Function to update UI with detected letters
+// function updateDetectedLettersUI() {
+//   var resultLetter = document.getElementById("resultLetter");
+//   var resultL = '<div class="result-Letter">';
+//   for (var i = 0; i < detectedLetters.length; i++) {
+//     resultL += '<div class="prediction">';
+//     resultL += '<p class="tag-name">' + detectedLetters[i] + "</p>";
+//     resultL += "</div>";
+//   }
+//   resultL += "</div>";
+//   resultLetter.innerHTML = resultL;
+
+//   // Add event listener to clear button
+//   var clearButton = document.getElementById("clearButton");
+//   clearButton.addEventListener("click", function () {
+//     clearDetectedLetters();
+//   });
+// }
 
 // Function to clear detected letters
 function clearDetectedLetters() {

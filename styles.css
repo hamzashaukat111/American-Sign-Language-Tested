@@ -5,6 +5,11 @@
   display: inline-block;
   margin-right: 3px; /* Adjust spacing between letters */
 }
+.stylish-letter {
+  font-size: 24px; /* Adjust font size as needed */
+  font-weight: bold; /* Adjust font weight as needed */
+  margin-right: 5px; /* Adjust spacing between letters */
+}
 
 .header {
   margin-bottom: 30px;
